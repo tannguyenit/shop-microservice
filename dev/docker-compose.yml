@@ -1,0 +1,33 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: miroservice_shopping_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      TZ: 'GMT'
+      PGTZ: 'GMT'
+      PGDATA: /data/postgres
+      POSTGRES_DB: miroservice_shopping
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/data/postgres:/data/postgres
+  nginx:
+    image: nginx:latest
+    container_name: miroservice_shopping_alb
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  nats:
+    image: nats:latest
+    container_name: miroservice_shopping_nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
