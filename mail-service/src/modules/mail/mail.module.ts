@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
+import { ConfigService } from '@nestjs/config';
 
 import { MailController } from './mail.controller';
 import { MailEntity } from './mail.entity';
@@ -11,28 +12,29 @@ import { MailService } from './mail.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([MailEntity]),
-    MailerModule.forRoot({
-      // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
-      // or
-      transport: {
-        host: 'sandbox.smtp.mailtrap.io',
-        secure: false,
-        port: 2525,
-        auth: {
-          user: 'cc7ff7e52aeb0e',
-          pass: 'd19f419a7fa66e',
+    MailerModule.forRootAsync({
+      useFactory: async (config: ConfigService) => ({
+        transport: {
+          host: config.get('MAIL_HOST'),
+          secure: false,
+          port: config.get('MAIL_PORT'),
+          auth: {
+            user: config.get('MAIL_USER'),
+            pass: config.get('MAIL_PASSWORD'),
+          },
         },
-      },
-      defaults: {
-        from: '"No Reply" <noreply@example.com>',
-      },
-      template: {
-        dir: join(__dirname, '/../../templates'),
-        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
-        options: {
-          strict: true,
+        defaults: {
+          from: `"No Reply" <${config.get('MAIL_FROM')}>`,
         },
-      },
+        template: {
+          dir: join(__dirname, '/../../templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
   providers: [MailService],
