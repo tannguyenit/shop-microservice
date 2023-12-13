@@ -16,6 +16,7 @@ import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -24,6 +25,13 @@ export class AuthController {
     private userService: UserService,
     private authService: AuthService,
   ) {}
+
+  @MessagePattern('get_user_by_ids')
+  getUserByIDS(@Payload() data: any) {
+      const { ids } = data;
+
+      return this.userService.getByIds(ids)
+  }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)

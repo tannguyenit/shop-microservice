@@ -21,6 +21,10 @@ export class UserService {
     return this.userRepository.findOneBy(findData);
   }
 
+  getByIds(ids: string[]) {
+    return this.userRepository.createQueryBuilder('user').whereInIds(ids).getMany();
+  }
+
   @Transactional()
   async createUser(
     userRegisterDto: UserRegisterDto,
