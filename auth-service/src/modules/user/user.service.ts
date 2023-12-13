@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { type FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
+import { ClientProxy } from '@nestjs/microservices';
 
 import { UserRegisterDto } from '../auth/dto/user-register.dto';
 import { UserEntity } from './user.entity';
@@ -9,8 +10,8 @@ import { UserEntity } from './user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
+    @Inject('MAIL_SERVICE') private readonly mailClient: ClientProxy
   ) {}
 
   /**
@@ -27,6 +28,7 @@ export class UserService {
     const user = this.userRepository.create(userRegisterDto);
 
     await this.userRepository.save(user);
+    this.mailClient.emit('user_created', user)
 
     return user;
   }

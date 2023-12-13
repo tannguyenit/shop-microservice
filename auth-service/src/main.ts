@@ -19,7 +19,7 @@ import { initializeTransactionalContext } from 'typeorm-transactional';
 
 import { AppModule } from './app.module';
 import { UnprocessableEntityExceptionFilter} from './filters/bad-request.filter';
-import { HttpExceptionFilter} from './filters/http-request.filter';
+// import { HttpExceptionFilter} from './filters/http-request.filter';
 import { QueryFailedFilter } from './filters/query-failed.filter';
 import { TranslationInterceptor } from './interceptors/translation-interceptor.service';
 import { setupSwagger } from './setup-swagger';
@@ -53,7 +53,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   app.useGlobalFilters(
     new UnprocessableEntityExceptionFilter(reflector),
     new QueryFailedFilter(reflector),
-    new HttpExceptionFilter(reflector),
+    // new HttpExceptionFilter(reflector),
   );
 
   app.useGlobalInterceptors(
