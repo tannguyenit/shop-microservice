@@ -81,11 +81,13 @@ export default function CheckoutPayment() {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async () => {
     try {
-      checkout.onNextStep();
-      checkout.onReset();
-      console.info('DATA', data);
+      const status = await checkout.onCompleted();
+      if (status === 201) {
+        checkout.onNextStep();
+        checkout.onReset();
+      }
     } catch (error) {
       console.error(error);
     }

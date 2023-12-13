@@ -9,7 +9,6 @@ import Avatar from '@mui/material/Avatar';
 import Collapse from '@mui/material/Collapse';
 import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,8 +24,9 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, onDeleteRow }) {
-  const { items, status, orderNumber, createdAt, customer, totalQuantity, subTotal } = row;
+export default function OrderTableRow({ row, selected, onViewRow, onDeleteRow }) {
+  const { id, items, status, created_at, customer, totalQuantity, subTotal } = row;
+  const orderNumber = `#${id}`
 
   const confirm = useBoolean();
 
@@ -36,10 +36,6 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
-      <TableCell padding="checkbox">
-        <Checkbox checked={selected} onClick={onSelectRow} />
-      </TableCell>
-
       <TableCell>
         <Box
           onClick={onViewRow}
@@ -70,8 +66,8 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
 
       <TableCell>
         <ListItemText
-          primary={format(new Date(createdAt), 'dd MMM yyyy')}
-          secondary={format(new Date(createdAt), 'p')}
+          primary={format(new Date(created_at), 'dd MMM yyyy')}
+          secondary={format(new Date(created_at), 'p')}
           primaryTypographyProps={{ typography: 'body2', noWrap: true }}
           secondaryTypographyProps={{
             mt: 0.5,
@@ -129,9 +125,9 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
           sx={{ bgcolor: 'background.neutral' }}
         >
           <Stack component={Paper} sx={{ m: 1.5 }}>
-            {items.map((item) => (
+            {items.map((item, index) => (
               <Stack
-                key={item.id}
+                key={index}
                 direction="row"
                 alignItems="center"
                 sx={{
@@ -211,7 +207,7 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
         title="Delete"
         content="Are you sure want to delete?"
         action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
+          <Button variant="contained" color="error" onClick={() => onDeleteRow(confirm)}>
             Delete
           </Button>
         }
@@ -222,7 +218,6 @@ export default function OrderTableRow({ row, selected, onViewRow, onSelectRow, o
 
 OrderTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
-  onSelectRow: PropTypes.func,
   onViewRow: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,

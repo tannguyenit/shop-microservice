@@ -1,4 +1,5 @@
 import uniq from 'lodash/uniq';
+import { sumBy } from "lodash";
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, useCallback } from 'react';
 
@@ -10,6 +11,7 @@ import { getStorage, useLocalStorage } from 'src/hooks/use-local-storage';
 import { PRODUCT_CHECKOUT_STEPS } from 'src/_mock/_product';
 
 import { CheckoutContext } from './checkout-context';
+import axios, { endpoints } from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -165,6 +167,20 @@ export function CheckoutProvider({ children }) {
 
   const completed = state.activeStep === PRODUCT_CHECKOUT_STEPS.length;
 
+  const onCompleted = useCallback(async () => {
+    const totalQuantity = sumBy(state.items, 'quantity');
+
+    const payload = {
+      ...state,
+      totalQuantity,
+      totalAmount: state.total,
+      shippingAddress: state.billing
+    }
+
+    const { status } = await axios.post(endpoints.order.create, payload);
+    return status;
+  }, [state]);
+
   // Reset
   const onReset = useCallback(() => {
     if (completed) {
@@ -177,6 +193,7 @@ export function CheckoutProvider({ children }) {
     () => ({
       ...state,
       completed,
+      onCompleted,
       //
       onAddToCart,
       onDeleteCart,
@@ -195,6 +212,7 @@ export function CheckoutProvider({ children }) {
       onReset,
     }),
     [
+      onCompleted,
       completed,
       onAddToCart,
       onApplyDiscount,

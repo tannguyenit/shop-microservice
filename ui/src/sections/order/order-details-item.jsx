@@ -5,12 +5,10 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import { fCurrency } from 'src/utils/format-number';
 
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 // ----------------------------------------------------------------------
@@ -74,11 +72,6 @@ export default function OrderDetailsItems({
     <Card>
       <CardHeader
         title="Details"
-        action={
-          <IconButton>
-            <Iconify icon="solar:pen-bold" />
-          </IconButton>
-        }
       />
 
       <Stack
@@ -87,9 +80,9 @@ export default function OrderDetailsItems({
         }}
       >
         <Scrollbar>
-          {items.map((item) => (
+          {items.map((item, index) => (
             <Stack
-              key={item.id}
+              key={index}
               direction="row"
               alignItems="center"
               sx={{

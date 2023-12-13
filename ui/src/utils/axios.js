@@ -20,24 +20,25 @@ export const fetcher = async (args) => {
 
   const res = await axiosInstance.get(url, { ...config });
 
-  return res.data;
+  return res.data?.data;
 };
 
 // ----------------------------------------------------------------------
 
 export const endpoints = {
   auth: {
-    me: '/api/auth/me',
-    login: '/api/auth/login',
-    register: '/api/auth/register',
+    me: '/auth/me',
+    login: '/auth/login',
+    register: '/auth/register',
   },
   product: {
-    list: '/api/product/list',
-    details: '/api/product/details',
-    search: '/api/product/search',
+    list: '/products/list',
+    details: '/products/details',
+    search: '/products/search',
   },
   order: {
-    list: '/api/product/list',
-    details: '/api/product/details',
+    create: '/orders/',
+    list: '/orders/',
+    details: '/orders/',
   },
 };

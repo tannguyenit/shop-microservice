@@ -24,8 +24,7 @@ import { useCheckoutContext } from '../checkout/context';
 export default function ProductItem({ product }) {
   const { onAddToCart } = useCheckoutContext();
 
-  const { id, name, coverUrl, price, colors, available, sizes, priceSale, newLabel, saleLabel } =
-    product;
+  const { id, name, coverUrl, price, colors, available, priceSale, newLabel, saleLabel } = product;
 
   const linkTo = paths.product.details(id);
 
@@ -37,7 +36,7 @@ export default function ProductItem({ product }) {
       available,
       price,
       colors: [colors[0]],
-      size: sizes[0],
+      size: 6,
       quantity: 1,
     };
     try {

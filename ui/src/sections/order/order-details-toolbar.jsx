@@ -22,7 +22,6 @@ export default function OrderDetailsToolbar({
   createdAt,
   orderNumber,
   statusOptions,
-  onChangeStatus,
 }) {
   const popover = usePopover();
 
@@ -78,18 +77,6 @@ export default function OrderDetailsToolbar({
           >
             {status}
           </Button>
-
-          <Button
-            color="inherit"
-            variant="outlined"
-            startIcon={<Iconify icon="solar:printer-minimalistic-bold" />}
-          >
-            Print
-          </Button>
-
-          <Button color="inherit" variant="contained" startIcon={<Iconify icon="solar:pen-bold" />}>
-            Edit
-          </Button>
         </Stack>
       </Stack>
 
@@ -105,7 +92,6 @@ export default function OrderDetailsToolbar({
             selected={option.value === status}
             onClick={() => {
               popover.onClose();
-              onChangeStatus(option.value);
             }}
           >
             {option.label}
@@ -118,8 +104,7 @@ export default function OrderDetailsToolbar({
 
 OrderDetailsToolbar.propTypes = {
   backLink: PropTypes.string,
-  createdAt: PropTypes.instanceOf(Date),
-  onChangeStatus: PropTypes.func,
+  createdAt: PropTypes.string,
   orderNumber: PropTypes.string,
   status: PropTypes.string,
   statusOptions: PropTypes.array,

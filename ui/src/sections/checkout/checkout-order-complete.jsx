@@ -61,16 +61,6 @@ export default function CheckoutOrderComplete({ open, onReset, onDownloadPDF }) 
         >
           Continue Shopping
         </Button>
-
-        <Button
-          fullWidth
-          size="large"
-          variant="contained"
-          startIcon={<Iconify icon="eva:cloud-download-fill" />}
-          onClick={onDownloadPDF}
-        >
-          Download as PDF
-        </Button>
       </Stack>
     </Stack>
   );

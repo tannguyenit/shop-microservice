@@ -20,6 +20,10 @@ export default function CheckoutView() {
 
   const checkout = useCheckoutContext();
 
+  if (checkout.activeStep > 1 && !checkout.billing) {
+    checkout.onBackStep()
+  }
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 10 }}>
       <Typography variant="h4" sx={{ my: { xs: 3, md: 5 } }}>

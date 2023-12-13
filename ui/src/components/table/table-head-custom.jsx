@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
@@ -26,26 +25,13 @@ const visuallyHidden = {
 export default function TableHeadCustom({
   order,
   orderBy,
-  rowCount = 0,
   headLabel,
-  numSelected = 0,
   onSort,
-  onSelectAllRows,
   sx,
 }) {
   return (
     <TableHead sx={sx}>
       <TableRow>
-        {onSelectAllRows && (
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={!!numSelected && numSelected < rowCount}
-              checked={!!rowCount && numSelected === rowCount}
-              onChange={(event) => onSelectAllRows(event.target.checked)}
-            />
-          </TableCell>
-        )}
-
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -83,8 +69,5 @@ TableHeadCustom.propTypes = {
   onSort: PropTypes.func,
   orderBy: PropTypes.string,
   headLabel: PropTypes.array,
-  rowCount: PropTypes.number,
-  numSelected: PropTypes.number,
-  onSelectAllRows: PropTypes.func,
   order: PropTypes.oneOf(['asc', 'desc']),
 };
